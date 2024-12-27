@@ -20,7 +20,7 @@ const Home = () => {
 
     // Fetch data
     axios
-      .get("https://api-pomodoroplanner.vercel.app/")
+      .get("https://api-pomodoroplanner.vercel.app/api/")
       .then((response) => {
         if (response.status === 200) {
           setMessage(response.data.message);
