@@ -1,50 +1,123 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from '../../Components/NavBar'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2';
+import axios from 'axios';
 
 const Register = () => {
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    if (password != confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("username", username);
+    formData.append("password", password);
+
+    setLoading(true);
+    axios.post("http://127.0.0.1:8000/auth/", formData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(response => {
+      setLoading(false);
+      console.log(response);
+      if (response.status === 201) {
+        localStorage.setItem("token", response.data.access_token);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Account created successfully'
+        }).then(() => {
+          navigate("/dashboard");
+        })
+      } else {
+        console.error("Unexpected response:", response);
+      }
+    }).catch(err => {
+      setLoading(false);
+      console.error(err);
+      Swal.fire("Error", err.message, "error");
+    });
+  }
+
   return (
     <>
+      {/* {
+        loading &&
+        Swal.fire({
+          title: 'Loading...',
+          text: 'Please wait',
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          willOpen: () => {
+            Swal.showLoading()
+          }
+        })
+      }
+      {
+        error &&
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: error
+        })
+      } */}
+
       <NavBar />
       <Container className='position-absolute top-50 start-50 translate-middle'>
         <div>
           <Card>
             <Card.Header><h1 className='text-center'>Register</h1></Card.Header>
             <Card.Body>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <Row>
                   <Col md="6">
                     <Form.Group id='fname' className='mb-3'>
                       <Form.Label>First Name</Form.Label>
-                      <Form.Control type='text' name='firstName' required />
+                      <Form.Control type='text' name='firstName' onChange={(e) => setFirstName(e.target.value)} required />
                     </Form.Group>
                   </Col>
                   <Col md="6">
                     <Form.Group id='lname' className='mb-3'>
                       <Form.Label>Last Name</Form.Label>
-                      <Form.Control type='text' name='lastName' required />
+                      <Form.Control type='text' name='lastName' onChange={(e) => setLastName(e.target.value)} required />
                     </Form.Group>
                   </Col>
 
                   <Col md="6">
                     <Form.Group id='email' className='mb-3'>
                       <Form.Label>Email</Form.Label>
-                      <Form.Control type='email' name='email' required />
+                      <Form.Control type='email' name='username' onChange={(e) => setUsername(e.target.value)} required />
                     </Form.Group>
                   </Col>
                   <Col md="3">
                     <Form.Group id='password' className='mb-3'>
                       <Form.Label>Password</Form.Label>
-                      <Form.Control type='password' name='password' required />
+                      <Form.Control type='password' name='password' onChange={(e) => setPassword(e.target.value)} required />
                     </Form.Group>
                   </Col>
                   <Col md="3">
                     <Form.Group id='confirmPassword' className='mb-3'>
                       <Form.Label>Confirm Password</Form.Label>
-                      <Form.Control type='password' name='confirmPassword' required />
+                      <Form.Control type='password' name='confirmPassword' onChange={(e) => setConfirmPassword(e.target.value)} required />
                     </Form.Group>
                   </Col>
                 </Row>
