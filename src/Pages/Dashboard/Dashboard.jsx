@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Dashboard = () => {
     return (
         <>
-            <h1>Dashboard</h1>
+            <h1>Welcome to Pomodoro Planner Dashboard</h1>
         </>
     )
 }
