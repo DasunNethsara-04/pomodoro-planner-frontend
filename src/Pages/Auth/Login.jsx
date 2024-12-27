@@ -1,11 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavBar from '../../Components/NavBar'
 import { Card, Col, Container, Row } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("username", email);
+    formData.append("password", password);
+
+    axios.post("http://127.0.0.1:8000/auth/token", formData, {
+      headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+      .then(response => {
+        if (response.status === 200) {
+          navigate("/dashboard");
+        } else {
+          console.error("Unexpected response:", response);
+        }
+      }).catch(err => {
+        console.error(err);
+      }
+      );
+  }
+
   return (
     <>
       <NavBar />
@@ -14,14 +43,14 @@ const Login = () => {
           <Card>
             <Card.Header><h1 className='text-center'>Login</h1></Card.Header>
             <Card.Body>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <Form.Group id='email' className='mb-3'>
                   <Form.Label>Email</Form.Label>
-                  <Form.Control type='email' name='email' required />
+                  <Form.Control type='email' name='email' onChange={(e) => setEmail(e.target.value)} required />
                 </Form.Group>
                 <Form.Group id='password' className='mb-3'>
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type='password' name='password' required />
+                  <Form.Control type='password' name='password' onChange={(e) => setPassword(e.target.value)} required />
                 </Form.Group>
                 <Button type='submit' className='w-100'>Login</Button>
               </Form>
