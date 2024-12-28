@@ -33,7 +33,7 @@ const Register = () => {
 
     setLoading(true);
     // https://api-pomodoroplanner.vercel.app/auth/
-    axios.post("https://api-pomodoroplanner.vercel.app/auth/", formData, {
+    axios.post("http://127.0.0.1:8000/auth/", formData, {
       headers: {
         "Content-Type": "application/json",
       },
