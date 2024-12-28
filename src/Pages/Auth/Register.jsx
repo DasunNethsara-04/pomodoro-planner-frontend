@@ -54,7 +54,7 @@ const Register = () => {
     }).catch(err => {
       setLoading(false);
       console.error(err);
-      Swal.fire("Error", err.message, "error");
+      Swal.fire("Error", err.response.data.detail, "error");
     });
   }
 
