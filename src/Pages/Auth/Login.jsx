@@ -21,7 +21,7 @@ const Login = () => {
     formData.append("username", email);
     formData.append("password", password);
 
-    axios.post("http://127.0.0.1:8000/auth/token", formData, {
+    axios.post("https://api-pomodoroplanner.vercel.app/auth/token", formData, {
       headers: { "Content-Type": "application/x-www-form-urlencoded" }
     })
       .then(response => {
