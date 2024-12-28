@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -25,11 +26,16 @@ const Login = () => {
     })
       .then(response => {
         if (response.status === 200) {
+          localStorage.setItem("token", response.data.access_token);
           navigate("/dashboard");
         } else {
           console.error("Unexpected response:", response);
         }
       }).catch(err => {
+        if (err.response.status === 401) {
+          Swal.fire("Error", err.response.data.detail, "error");
+        }
+
         console.error(err);
       }
       );
