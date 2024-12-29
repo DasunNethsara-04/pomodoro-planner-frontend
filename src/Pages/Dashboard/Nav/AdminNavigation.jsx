@@ -5,6 +5,13 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 
+import { Navigate } from "react-router-dom";
+
+const logout = () => {
+    localStorage.removeItem("token");
+    window.location.href = '/login';
+}
+
 function AdminNavigation() {
     return (
         <Navbar expand="lg" className="bg-body-tertiary">
@@ -24,7 +31,7 @@ function AdminNavigation() {
                         </NavDropdown>
                         <Nav.Link as={Link} to="/stat">Statistics</Nav.Link>
                     </Nav>
-                    <Button variant='outline-danger'>Logout</Button>
+                    <Button variant='outline-danger' onClick={logout}>Logout</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
