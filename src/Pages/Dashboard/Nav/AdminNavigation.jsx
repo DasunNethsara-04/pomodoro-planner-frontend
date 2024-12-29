@@ -5,8 +5,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link } from 'react-router-dom';
 
-import { Navigate } from "react-router-dom";
-
 const logout = () => {
     localStorage.removeItem("token");
     window.location.href = '/login';

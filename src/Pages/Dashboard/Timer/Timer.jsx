@@ -1,8 +1,12 @@
 import React from 'react'
+import AdminNavigation from '../Nav/AdminNavigation'
 
 const Timer = () => {
     return (
-        <div>Timer</div>
+        <>
+            <AdminNavigation />
+            Timer
+        </>
     )
 }
 

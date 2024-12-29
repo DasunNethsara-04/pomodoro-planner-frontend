@@ -1,9 +1,12 @@
 import React from 'react'
-
-const Show = () => {
+import AdminNavigation from '../Nav/AdminNavigation';
+const ShowTodo = () => {
     return (
-        <div>Show Todo</div>
+        <>
+            <AdminNavigation />
+            Show Todo
+        </>
     )
 }
 
-export default Show
+export default ShowTodo

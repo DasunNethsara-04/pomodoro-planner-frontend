@@ -1,8 +1,12 @@
 import React from 'react'
+import AdminNavigation from '../Nav/AdminNavigation';
 
 const Statistics = () => {
     return (
-        <div>Statistics</div>
+        <>
+            <AdminNavigation />
+            Statistics
+        </>
     )
 }
 

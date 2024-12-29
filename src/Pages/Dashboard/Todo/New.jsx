@@ -1,9 +1,13 @@
 import React from 'react'
+import AdminNavigation from '../Nav/AdminNavigation';
 
-const New = () => {
+const NewTodo = () => {
     return (
-        <div>New Todo</div>
+        <>
+            <AdminNavigation />
+            New Todo
+        </>
     )
 }
 
-export default New
+export default NewTodo
