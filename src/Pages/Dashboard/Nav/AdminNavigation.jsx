@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -21,8 +22,9 @@ function AdminNavigation() {
                                 Show Todos
                             </NavDropdown.Item>
                         </NavDropdown>
-                        <Nav.Link href="/stat">Statistics</Nav.Link>
+                        <Nav.Link as={Link} to="/stat">Statistics</Nav.Link>
                     </Nav>
+                    <Button variant='outline-danger'>Logout</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
