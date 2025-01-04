@@ -32,7 +32,7 @@ const NewTodo = () => {
                     icon: 'success',
                     confirmButtonText: 'Ok'
                 }).then(() => {
-                    window.location.href = '/dashboard/';
+                    window.location.href = '/todo/show/';
                 });
             } else {
                 Swal.fire({
@@ -43,6 +43,7 @@ const NewTodo = () => {
                 });
             }
         } catch (err) {
+            console.error(err);
             Swal.fire({
                 title: 'Error',
                 text: 'An error occurred while processing your request',
