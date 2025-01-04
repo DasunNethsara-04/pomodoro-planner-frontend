@@ -3,11 +3,13 @@ import AdminNavigation from '../Nav/AdminNavigation';
 import { Button, Container, Form } from 'react-bootstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const NewTodo = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,7 +34,7 @@ const NewTodo = () => {
                     icon: 'success',
                     confirmButtonText: 'Ok'
                 }).then(() => {
-                    window.location.href = '/todo/show/';
+                    navigate('/todo/show');
                 });
             } else {
                 Swal.fire({
