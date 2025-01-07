@@ -71,7 +71,7 @@ const NewTodo = () => {
                         <Form.Control as="textarea" name='description' onChange={(e) => setDescription(e.target.value)} placeholder='Buy some food from supermarket for dinner' />
                     </Form.Group>
                     <Form.Group id='dueDate' className='mb-3'>
-                        <Form.Label>Todo Title</Form.Label>
+                        <Form.Label>Todo Due date</Form.Label>
                         <Form.Control type='date' name='dueDate' onChange={(e) => setDueDate(e.target.value)} required />
                     </Form.Group>
                     <Form.Group className='mb-3'>
