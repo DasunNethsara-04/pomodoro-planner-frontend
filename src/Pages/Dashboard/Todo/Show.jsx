@@ -16,7 +16,6 @@ const ShowTodo = () => {
     const [editTodoStatus, setEditTodoStatus] = useState("");
 
     const [show, setShow] = useState(false);
-    const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
 
     useEffect(() => {
@@ -37,6 +36,16 @@ const ShowTodo = () => {
         };
         fetchTodos();
     }, []);
+
+    const fetchTodoById = async (id) => {
+        console.log(id);
+    }
+
+    const handleEditButton = (todo) => {
+        const handleShow = () => setShow(true);
+        handleShow();
+        fetchTodoById(todo.id);
+    }
 
     const handleEditTodoForm = (e) => {
         console.log("fvdfv");
@@ -77,7 +86,7 @@ const ShowTodo = () => {
                                     <td>
                                         <button
                                             className="btn-sm btn btn-outline-warning"
-                                            onClick={handleShow}
+                                            onClick={(todo) => handleEditButton(todo)}
                                         >
                                             <RiFileEditLine />
                                         </button>
