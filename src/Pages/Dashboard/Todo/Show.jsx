@@ -6,10 +6,13 @@ import { RiFileEditLine } from "react-icons/ri";
 import { FaTrashCan } from "react-icons/fa6";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import Swal from "sweetalert2";
 
 const ShowTodo = () => {
+
     const [todos, setTodos] = useState([]);
 
+    const [editId, setEditId] = useState("");
     const [editTitle, setEditTitle] = useState("");
     const [editDescription, setEditDescription] = useState("");
     const [editDueDate, setEditDueDate] = useState("");
@@ -28,7 +31,6 @@ const ShowTodo = () => {
                 },
             });
             if (response.status === 200) {
-                console.log(response.data.todos);
                 setTodos(response.data.todos);
             } else {
                 console.error("An error occurred while fetching todos");
@@ -38,6 +40,7 @@ const ShowTodo = () => {
     }, []);
 
     const fetchTodoById = async (id) => {
+        setEditId(id);
         try {
             const response = await axios.get(`http://127.0.0.1:8000/api/todo/${id}`, {
                 headers: {
@@ -46,7 +49,6 @@ const ShowTodo = () => {
                 },
             });
             if (response.status === 200) {
-                console.log(response.data.todo);
                 setEditTitle(response.data.todo.title);
                 setEditDescription(response.data.todo.description);
                 setEditDueDate(response.data.todo.dueDate);
@@ -63,8 +65,7 @@ const ShowTodo = () => {
         fetchTodoById(todo.id);
     }
 
-    const handleEditTodoForm = (e) => {
-        console.log("fvdfv");
+    const handleEditTodoForm = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
@@ -73,7 +74,40 @@ const ShowTodo = () => {
         formData.append("dueDate", editDueDate);
         formData.append("status", editTodoStatus);
 
-        console.log(formData);
+        // send the data to the fastapi backend
+        try {
+            const response = await axios.put(`http://127.0.0.1:8000/api/todo/${editId}`, formData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                },
+            });
+            if (response.data.success) {
+                Swal.fire({
+                    title: 'Success',
+                    text: response.data.message,
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                }).then(() => {
+                    window.location.href = "/todo/show";
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: response.data.message,
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+            }
+        } catch (error) {
+            console.error(error);
+            Swal.fire({
+                title: 'Error',
+                text: 'An error occurred while processing your request',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        }
     };
 
     return (
