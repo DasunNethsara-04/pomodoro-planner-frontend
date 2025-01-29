@@ -65,6 +65,33 @@ const ShowTodo = () => {
         fetchTodoById(todo.id);
     }
 
+    const handleDeleteButton = (todo) => {
+        // show a sweetalert popup that user needs to confirm to process the delete
+        Swal.fire({
+            icon: "question",
+            title: "Do you want to delete the Todo?",
+            showCancelButton: true,
+            confirmButtonText: "Delete",
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            handleDeleteTodo(todo.id);
+        });
+    }
+
+    const handleDeleteTodo = async (id) => {
+        try {
+            const response = await axios.delete(`http://127.0.0.1:8000/api/todo/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            if (response.status === 200) {
+                Swal.fire("Deleted!", "", "success").then(() => window.location.reload(false))
+            }
+        } catch (error) { console.error(error); }
+    }
+
     const handleEditTodoForm = async (e) => {
         e.preventDefault();
 
@@ -140,7 +167,7 @@ const ShowTodo = () => {
                                         >
                                             <RiFileEditLine />
                                         </button>
-                                        <button className="ms-2 btn-sm btn btn-outline-danger">
+                                        <button className="ms-2 btn-sm btn btn-outline-danger" onClick={() => handleDeleteButton(todo)}>
                                             <FaTrashCan />
                                         </button>
                                     </td>
