@@ -38,7 +38,23 @@ const ShowTodo = () => {
     }, []);
 
     const fetchTodoById = async (id) => {
-        console.log(id);
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/api/todo/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+            if (response.status === 200) {
+                console.log(response.data.todo);
+                setEditTitle(response.data.todo.title);
+                setEditDescription(response.data.todo.description);
+                setEditDueDate(response.data.todo.dueDate);
+                setEditTodoStatus(response.data.todo.completed);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     const handleEditButton = (todo) => {
@@ -86,7 +102,7 @@ const ShowTodo = () => {
                                     <td>
                                         <button
                                             className="btn-sm btn btn-outline-warning"
-                                            onClick={(todo) => handleEditButton(todo)}
+                                            onClick={() => handleEditButton(todo)}
                                         >
                                             <RiFileEditLine />
                                         </button>
@@ -119,6 +135,7 @@ const ShowTodo = () => {
                                         name="title"
                                         placeholder="Buy food"
                                         onChange={(e) => setEditTitle(e.target.value)}
+                                        value={editTitle}
                                         required
                                     />
                                 </Form.Group>
@@ -128,6 +145,7 @@ const ShowTodo = () => {
                                         as="textarea"
                                         name="description"
                                         onChange={(e) => setEditDescription(e.target.value)}
+                                        value={editDescription}
                                         placeholder="Buy some food from supermarket for dinner"
                                     />
                                 </Form.Group>
@@ -137,6 +155,7 @@ const ShowTodo = () => {
                                         type="date"
                                         name="dueDate"
                                         onChange={(e) => setEditDueDate(e.target.value)}
+                                        value={editDueDate}
                                         required
                                     />
                                 </Form.Group>
@@ -147,6 +166,7 @@ const ShowTodo = () => {
                                         label="Yes"
                                         name="done"
                                         value="1"
+                                        checked={editTodoStatus === true}
                                         onChange={(e) => setEditTodoStatus(e.target.value)}
                                     />
                                     <Form.Check
@@ -154,6 +174,7 @@ const ShowTodo = () => {
                                         label="No"
                                         name="done"
                                         value="0"
+                                        checked={editTodoStatus === false}
                                         onChange={(e) => setEditTodoStatus(e.target.value)}
                                     />
                                 </Form.Group>
