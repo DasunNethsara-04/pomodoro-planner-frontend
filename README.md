@@ -14,9 +14,8 @@ This web application is a simple Pomodoro Planner that allows students to plan t
 
 ## Technologies
 
-- HTML
-- JavaScript
 - React
+- Vite
 - Bootstrap
 
 # Requirements
